@@ -2,54 +2,53 @@
 <html lang="es">
 
 <head>
+    <meta property="og:title" content="¡Conseguí 10,000 puntos!" />
+    <meta property="og:description" content="He alcanzado la increíble cifra de 10,000 puntos. ¡Estoy emocionado!" />
+    <meta property="og:image" content="https://pruebas-graficas.vercel.app/imagen.png" />
+    <!-- Reemplaza con la URL de tu imagen -->
+    <meta property="og:url" content="https://pruebas-graficas.vercel.app/" /> <!-- Reemplaza con la URL de la página -->
+    <meta property="og:type" content="website">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publicar en Facebook</title>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <title>Compartir en el Feed de Facebook</title>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_ES/sdk.js"></script>
 </head>
 
 <body>
-    <h1>Publicación en Facebook</h1>
+    <h1>Compartir en el Feed de Facebook</h1>
 
-    <input type="text" id="postText" placeholder="Escribe tu mensaje aquí">
-    <button id="shareButton">Publicar en Facebook</button>
-
-    <div id="fb-root"></div>
+    <input type="text" id="postText" placeholder="Escribe un mensaje adicional (opcional)">
+    <button id="shareButton">Compartir en el Feed</button>
 
     <script>
         // Inicializar el SDK de Facebook
         window.fbAsyncInit = function () {
             FB.init({
-                appId: '557943246675947',
+                appId: '557943246675947', // Reemplaza con tu appId
                 xfbml: true,
-                version: 'v21.0'
+                version: 'v16.0'
             });
         };
 
-        // Evento del botón para publicar en Facebook
+        // Evento del botón para compartir en el feed
         document.getElementById('shareButton').addEventListener('click', function () {
-            var message = document.getElementById('postText').value;
+            var additionalText = document.getElementById('postText').value;
+            var linkToShare = 'https://pruebas-graficas.vercel.app/'; // La URL que deseas compartir
 
-            // Asegúrate de que el usuario haya iniciado sesión y tenga los permisos necesarios
-            FB.login(function (response) {
-                if (response.authResponse) {
-                    // Publicar en el perfil del usuario
-                    FB.api(
-                        '/me/feed',
-                        'POST',
-                        { message: message }, // Mensaje que se va a publicar
-                        function (response) {
-                            if (!response || response.error) {
-                                alert('Error al publicar: ' + response.error.message);
-                            } else {
-                                alert('Publicación exitosa con ID: ' + response.id);
-                            }
-                        }
-                    );
+            // Usar FB.ui para abrir el cuadro de diálogo de compartir
+            FB.ui({
+                method: 'feed',
+                link: linkToShare, // La URL que se va a compartir
+                caption: 'Consegui 10000! puntos', // Título o pie de la publicación
+                description: additionalText, // Descripción adicional (no siempre visible)
+                picture: 'https://pruebas-graficas.vercel.app/imagen.png' // URL de una imagen (opcional)
+            }, function (response) {
+                if (response && !response.error_message) {
+                    alert('Publicación compartida exitosamente.');
                 } else {
-                    alert('El usuario no está autenticado.');
+
                 }
-            }, { scope: 'publish_actions' }); // Asegúrate de tener los permisos necesarios
+            });
         });
     </script>
 </body>
